@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration — Espace membres FGBMFI Paris</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- ============ CONNEXION ADMIN ============ -->
+<div id="admin-vue-connexion" class="page-connexion">
+  <div class="carte connexion-carte">
+    <div class="sceau" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.2 3.8 9.9 9 11 5.2-1.1 9-5.8 9-11V5l-9-4Z"/></svg>
+    </div>
+    <h1>Administration</h1>
+    <p class="soustitre">Espace réservé aux administrateurs de FGBMFI Paris.</p>
+    <form id="form-admin-connexion">
+      <div class="champ">
+        <label for="admin-email">Adresse e-mail</label>
+        <input type="email" id="admin-email" required autocomplete="username">
+      </div>
+      <div class="champ">
+        <label for="admin-mdp">Mot de passe</label>
+        <input type="password" id="admin-mdp" required autocomplete="current-password" style="font-family:var(--font-body);">
+      </div>
+      <div class="champ cache" id="champ-totp">
+        <label for="admin-totp">Code d'authentification à deux facteurs</label>
+        <input type="text" id="admin-totp" inputmode="numeric" maxlength="6" style="font-family:var(--font-mono);">
+      </div>
+      <button type="submit" class="bouton-principal">Se connecter</button>
+    </form>
+    <div id="admin-message-connexion"></div>
+  </div>
+</div>
+
+<!-- ============ TABLEAU DE BORD ADMIN ============ -->
+<div id="admin-vue-dashboard" class="cache">
+  <header class="entete">
+    <div class="conteneur entete__contenu">
+      <img src="/icons/icon-192.png" alt="Logo FGBMFI Paris" class="logo">
+      <div class="entete__texte">
+        <span class="entete__nom">Administration</span>
+        <span class="entete__rna" id="admin-role-affiche">—</span>
+      </div>
+      <button class="entete__deconnexion" id="btn-admin-deconnexion">Déconnexion</button>
+    </div>
+  </header>
+
+  <nav class="admin-onglets conteneur">
+    <button class="onglet actif" data-onglet="membres">Membres</button>
+    <button class="onglet" data-onglet="parametres">Contenu &amp; liens</button>
+    <button class="onglet" data-onglet="statuts">Document des statuts</button>
+    <button class="onglet" data-onglet="journaux">Journaux</button>
+    <button class="onglet" data-onglet="comptes">Comptes admin</button>
+    <button class="onglet" data-onglet="securite">Ma sécurité</button>
+  </nav>
+
+  <main class="conteneur admin-contenu">
+
+    <!-- ---- Onglet Membres ---- -->
+    <section id="onglet-membres" class="panneau">
+      <div class="panneau-entete">
+        <h2>Membres autorisés</h2>
+        <div class="actions-groupe">
+          <button class="bouton-mini" id="btn-nouveau-membre">+ Ajouter un membre</button>
+          <label class="bouton-mini bouton-mini--fichier">
+            Importer un CSV
+            <input type="file" id="input-csv" accept=".csv" class="cache">
+          </label>
+        </div>
+      </div>
+      <p class="aide">Colonnes attendues du CSV : <code>prenom,nom,telephone,statut</code></p>
+      <div id="resultat-import"></div>
+
+      <div id="formulaire-membre" class="carte cache" style="margin-bottom:18px;"></div>
+
+      <table class="table-admin" id="table-membres">
+        <thead><tr><th>Nom</th><th>Téléphone</th><th>Statut</th><th>Accès</th><th>Dernière connexion</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- ---- Onglet Paramètres ---- -->
+    <section id="onglet-parametres" class="panneau cache">
+      <h2>Contenu &amp; liens éditables</h2>
+      <p class="aide">Ces textes et liens sont affichés dans l'espace membres, sans besoin de redéploiement.</p>
+      <div id="liste-parametres"></div>
+    </section>
+
+    <!-- ---- Onglet Statuts ---- -->
+    <section id="onglet-statuts" class="panneau cache">
+      <h2>Document des statuts (PDF)</h2>
+      <p class="aide">Le fichier remplace immédiatement la version consultée par les membres. Réservé au super-administrateur.</p>
+      <form id="form-statuts">
+        <input type="file" id="input-statuts" accept="application/pdf" required>
+        <button type="submit" class="bouton-mini">Mettre à jour le document</button>
+      </form>
+      <div id="message-statuts"></div>
+    </section>
+
+    <!-- ---- Onglet Journaux ---- -->
+    <section id="onglet-journaux" class="panneau cache">
+      <h2>Journal des connexions membres</h2>
+      <table class="table-admin" id="table-logs-connexions">
+        <thead><tr><th>Date</th><th>Téléphone</th><th>Action</th><th>IP</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <h2 style="margin-top:30px;">Journal des actions administrateur</h2>
+      <table class="table-admin" id="table-logs-admin">
+        <thead><tr><th>Date</th><th>Admin</th><th>Action</th><th>Détail</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- ---- Onglet Comptes admin ---- -->
+    <section id="onglet-comptes" class="panneau cache">
+      <h2>Comptes administrateurs</h2>
+      <button class="bouton-mini" id="btn-nouveau-compte">+ Nouveau compte</button>
+      <div id="formulaire-compte" class="carte cache" style="margin:14px 0;"></div>
+      <table class="table-admin" id="table-comptes">
+        <thead><tr><th>E-mail</th><th>Rôle</th><th>2FA</th><th>Actif</th><th>Dernière connexion</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- ---- Onglet Sécurité ---- -->
+    <section id="onglet-securite" class="panneau cache">
+      <h2>Double authentification (2FA)</h2>
+      <p class="aide">Recommandé pour tous les comptes administrateurs, obligatoire en pratique pour le super-administrateur.</p>
+      <div id="zone-2fa"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

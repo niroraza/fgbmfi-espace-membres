@@ -1,0 +1,195 @@
+/* ============================================================
+   FGBMFI Paris — Espace membres
+   Tokens : cohérents avec la PWA de présentation (navy/gold/fuchsia,
+   Fraunces + Inter + IBM Plex Mono), mais traités ici avec plus de
+   retenue : c'est un espace de confiance, pas une vitrine promotionnelle.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy-950: #0a1830;
+  --navy-900: #0e2142;
+  --navy-800: #16305a;
+  --navy-700: #234478;
+  --gold-500: #c9a227;
+  --gold-400: #dab949;
+  --gold-100: #f4ecd2;
+  --cream-50: #faf8f2;
+  --cream-100: #f2eee1;
+  --ink: #101826;
+  --ink-soft: #4b5568;
+  --line: #dcd6c4;
+  --ok-600: #2f6f4f;
+  --err-600: #a3312a;
+  --err-100: #fbe9e7;
+  --radius: 14px;
+  --shadow-soft: 0 10px 30px -12px rgba(10, 24, 48, 0.25);
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream-50);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+}
+h1, h2, h3, .display { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+a { color: inherit; }
+button { font-family: var(--font-body); cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold-500); outline-offset: 2px; }
+
+.conteneur { max-width: 780px; margin: 0 auto; padding: 0 20px; }
+
+/* ---------- En-tête institutionnel ---------- */
+.entete {
+  background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+  color: var(--cream-50);
+  padding: 22px 0;
+  position: relative;
+}
+.entete__contenu { display: flex; align-items: center; gap: 14px; }
+.entete img.logo { height: 40px; width: auto; border-radius: 8px; }
+.entete__texte { display: flex; flex-direction: column; }
+.entete__nom { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+.entete__rna { font-family: var(--font-mono); font-size: 0.72rem; color: var(--gold-400); letter-spacing: 0.04em; }
+.entete__deconnexion {
+  margin-left: auto; background: transparent; border: 1px solid rgba(244,236,210,0.35);
+  color: var(--cream-50); border-radius: 999px; padding: 8px 16px; font-size: 0.85rem;
+}
+.entete__deconnexion:hover { border-color: var(--gold-400); color: var(--gold-400); }
+
+/* ---------- Le sceau (élément signature) ---------- */
+.sceau {
+  width: 92px; height: 92px; border-radius: 50%;
+  border: 1.5px solid var(--gold-500);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; margin: 0 auto 22px;
+  background: radial-gradient(circle at 50% 40%, var(--navy-800), var(--navy-950));
+}
+.sceau::before {
+  content: ''; position: absolute; inset: 6px; border-radius: 50%;
+  border: 1px dashed rgba(201,162,39,0.45);
+}
+.sceau svg { width: 36px; height: 36px; fill: var(--gold-400); }
+
+/* ---------- Cartes ---------- */
+.carte {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft); padding: 32px;
+}
+
+/* ---------- Page de connexion ---------- */
+.page-connexion { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.connexion-carte { max-width: 420px; width: 100%; text-align: center; }
+.connexion-carte h1 { font-size: 1.5rem; margin: 0 0 6px; }
+.connexion-carte p.soustitre { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 26px; }
+
+.champ { text-align: left; margin-bottom: 18px; }
+.champ label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; color: var(--navy-900); }
+.champ input[type="tel"] {
+  width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+  font-family: var(--font-mono); font-size: 1rem; letter-spacing: 0.02em;
+}
+.champ input[type="tel"]:focus { border-color: var(--gold-500); }
+.champ small { display: block; margin-top: 6px; color: var(--ink-soft); font-size: 0.78rem; }
+
+/* Saisie du code OTP en 6 cases */
+.otp-cases { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+.otp-cases input {
+  width: 44px; height: 54px; text-align: center; font-family: var(--font-mono);
+  font-size: 1.4rem; border: 1.5px solid var(--line); border-radius: 10px; background: var(--cream-100);
+}
+.otp-cases input:focus { border-color: var(--gold-500); background: #fff; }
+
+.bouton-principal {
+  width: 100%; background: var(--navy-900); color: #fff; border: none; border-radius: 999px;
+  padding: 14px 20px; font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease;
+}
+.bouton-principal:hover:not(:disabled) { background: var(--navy-800); }
+.bouton-principal:disabled { opacity: 0.55; cursor: not-allowed; }
+.bouton-secondaire {
+  width: 100%; background: transparent; color: var(--navy-900); border: 1.5px solid var(--line);
+  border-radius: 999px; padding: 12px 20px; font-weight: 600; font-size: 0.92rem; margin-top: 10px;
+}
+.bouton-secondaire:hover { border-color: var(--gold-500); }
+
+.message { border-radius: 10px; padding: 12px 14px; font-size: 0.87rem; margin: 14px 0; text-align: left; }
+.message--erreur { background: var(--err-100); color: var(--err-600); }
+.message--info { background: var(--gold-100); color: var(--navy-900); }
+.message--test {
+  background: var(--navy-950); color: var(--gold-400); font-family: var(--font-mono);
+  font-size: 0.8rem; padding: 10px 14px; border-radius: 10px; margin-top: 12px;
+}
+
+/* ---------- Espace membre ---------- */
+.hero-membre {
+  background: linear-gradient(155deg, var(--navy-900), var(--navy-700));
+  color: var(--cream-50); padding: 44px 0 40px;
+}
+.hero-membre .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; color: var(--gold-400); text-transform: uppercase; }
+.hero-membre h1 { font-size: 1.7rem; margin: 8px 0 10px; max-width: 560px; }
+.hero-membre p { color: rgba(250,248,242,0.85); max-width: 560px; font-size: 0.98rem; }
+.hero-membre .cta { margin-top: 20px; }
+.hero-membre .cta button {
+  background: var(--gold-500); color: var(--navy-950); border: none; border-radius: 999px;
+  padding: 13px 26px; font-weight: 700; font-size: 0.95rem;
+}
+.hero-membre .cta button:hover { background: var(--gold-400); }
+
+.section-membre { padding: 34px 0; }
+.grille-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+@media (max-width: 560px) { .grille-actions { grid-template-columns: 1fr; } }
+
+.action-carte {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+  text-align: left; display: flex; flex-direction: column; gap: 6px; text-decoration: none;
+}
+.action-carte h3 { font-size: 1rem; margin: 0; color: var(--navy-900); }
+.action-carte p { font-size: 0.85rem; color: var(--ink-soft); margin: 0; flex: 1; }
+.action-carte span.fleche { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold-500); }
+.action-carte:hover { border-color: var(--gold-500); }
+
+/* ---------- Lecteur de statuts ---------- */
+.lecteur-entete {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 14px 20px; background: var(--navy-950); color: var(--cream-50); position: sticky; top: 0; z-index: 5;
+}
+.lecteur-entete .titre { font-family: var(--font-display); font-size: 1rem; }
+.lecteur-controles { display: flex; align-items: center; gap: 10px; }
+.lecteur-controles button {
+  background: rgba(244,236,210,0.1); border: 1px solid rgba(244,236,210,0.25); color: var(--cream-50);
+  border-radius: 8px; padding: 7px 12px; font-size: 0.85rem;
+}
+.lecteur-controles button:hover { border-color: var(--gold-400); }
+.lecteur-controles .page-indic { font-family: var(--font-mono); font-size: 0.85rem; color: var(--gold-400); }
+
+.lecteur-zone { background: #2b2b2b; min-height: calc(100vh - 60px); display: flex; flex-direction: column; align-items: center; padding: 24px 0; gap: 18px; }
+.page-pdf-conteneur { position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.4); background: #fff; }
+.page-pdf-conteneur canvas { display: block; max-width: 92vw; height: auto; user-select: none; -webkit-user-select: none; }
+.filigrane-svg { position: absolute; inset: 0; pointer-events: none; opacity: 0.16; }
+
+.avis-securite {
+  max-width: 780px; margin: 0 auto 14px; color: var(--cream-100); font-size: 0.78rem;
+  text-align: center; padding: 0 20px; opacity: 0.75;
+}
+
+/* ---------- Pied de page ---------- */
+.pied {
+  border-top: 1px solid var(--line); padding: 28px 0 40px; margin-top: 20px;
+  color: var(--ink-soft); font-size: 0.82rem;
+}
+.pied .rna { font-family: var(--font-mono); }
+.pied a { text-decoration: underline; }
+
+/* ---------- Écran de chargement ---------- */
+.chargement { display: flex; align-items: center; justify-content: center; min-height: 200px; color: var(--ink-soft); font-size: 0.9rem; }
+
+/* ---------- Utilitaires ---------- */
+.cache { display: none !important; }
+.centre { text-align: center; }

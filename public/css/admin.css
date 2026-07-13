@@ -1,0 +1,48 @@
+.admin-onglets {
+  display: flex; gap: 6px; flex-wrap: wrap; padding: 16px 20px 0;
+  border-bottom: 1px solid var(--line); margin-bottom: 0;
+}
+.onglet {
+  background: transparent; border: none; padding: 10px 14px; font-size: 0.88rem;
+  color: var(--ink-soft); border-bottom: 2px solid transparent; font-weight: 600;
+}
+.onglet.actif { color: var(--navy-900); border-bottom-color: var(--gold-500); }
+.onglet:hover { color: var(--navy-900); }
+
+.admin-contenu { padding: 26px 20px 60px; max-width: 1000px; }
+.panneau h2 { font-size: 1.15rem; margin: 0 0 6px; }
+.aide { color: var(--ink-soft); font-size: 0.85rem; margin: 0 0 16px; }
+.aide code { background: var(--cream-100); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); }
+
+.panneau-entete { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
+.actions-groupe { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.bouton-mini {
+  background: var(--navy-900); color: #fff; border: none; border-radius: 8px;
+  padding: 9px 16px; font-size: 0.85rem; font-weight: 600;
+}
+.bouton-mini:hover { background: var(--navy-800); }
+.bouton-mini--fichier { display: inline-flex; align-items: center; cursor: pointer; }
+.bouton-mini--danger { background: var(--err-600); }
+.bouton-mini--fantome { background: transparent; color: var(--navy-900); border: 1px solid var(--line); }
+
+.table-admin { width: 100%; border-collapse: collapse; font-size: 0.87rem; margin-top: 14px; }
+.table-admin th { text-align: left; color: var(--ink-soft); font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.table-admin td { padding: 10px; border-bottom: 1px solid var(--cream-100); vertical-align: middle; }
+.table-admin tr:hover td { background: var(--cream-100); }
+
+.badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+.badge--ok { background: #e5f2ea; color: var(--ok-600); }
+.badge--off { background: var(--err-100); color: var(--err-600); }
+
+.champ-inline { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.champ-inline label { font-size: 0.82rem; font-weight: 600; min-width: 160px; }
+.champ-inline input, .champ-inline select, .champ-inline textarea {
+  flex: 1; min-width: 220px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-family: var(--font-body); font-size: 0.9rem;
+}
+.champ-inline textarea { min-height: 70px; font-family: var(--font-body); }
+
+.parametre-bloc { border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 10px; background: #fff; }
+.parametre-bloc .cle { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gold-500); margin-bottom: 6px; }
+.parametre-bloc textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-family: var(--font-body); }
+.parametre-bloc button { margin-top: 8px; }

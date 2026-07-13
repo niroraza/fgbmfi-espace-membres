@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Espace des membres — FGBMFI Paris</title>
+<meta name="description" content="Espace sécurisé réservé aux membres de FGBMFI Paris.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ============ VUE 1 : CONNEXION (numéro de téléphone) ============ -->
+<div id="vue-connexion" class="page-connexion">
+  <div class="carte connexion-carte">
+    <div class="sceau" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.2 3.8 9.9 9 11 5.2-1.1 9-5.8 9-11V5l-9-4Zm0 2.2 7 3.1v4.7c0 4.2-3 8.1-7 9.1-4-1-7-4.9-7-9.1V6.3l7-3.1Zm-1 6.3v4h2v-4h-2Zm0-3v2h2v-2h-2Z"/></svg>
+    </div>
+    <h1>Espace des membres</h1>
+    <p class="soustitre">Accès réservé aux membres de FGBMFI Paris.</p>
+
+    <form id="form-telephone">
+      <div class="champ">
+        <label for="telephone">Numéro de téléphone</label>
+        <input type="tel" id="telephone" name="telephone" placeholder="+33 6 00 00 00 00" autocomplete="tel" required inputmode="tel">
+        <small>Utilisez le numéro associé à votre adhésion. Un code de vérification vous sera envoyé par SMS.</small>
+      </div>
+      <button type="submit" class="bouton-principal" id="btn-demander-code">Recevoir mon code</button>
+    </form>
+
+    <div id="zone-message-connexion"></div>
+  </div>
+</div>
+
+<!-- ============ VUE 2 : SAISIE DU CODE OTP ============ -->
+<div id="vue-otp" class="page-connexion cache">
+  <div class="carte connexion-carte">
+    <div class="sceau" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M6 10V8a6 6 0 1 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h8V8a4 4 0 0 0-8 0v2Z"/></svg>
+    </div>
+    <h1>Entrez votre code</h1>
+    <p class="soustitre" id="otp-soustitre">Un code à 6 chiffres a été envoyé par SMS.</p>
+
+    <form id="form-otp">
+      <div class="otp-cases" id="otp-cases">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 1">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 2">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 3">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 4">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 5">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Chiffre 6">
+      </div>
+      <button type="submit" class="bouton-principal" id="btn-verifier-code" style="margin-top:16px;">Vérifier le code</button>
+      <button type="button" class="bouton-secondaire" id="btn-renvoyer-code">Renvoyer un code</button>
+      <button type="button" class="bouton-secondaire" id="btn-changer-numero">Changer de numéro</button>
+    </form>
+
+    <div id="zone-message-otp"></div>
+  </div>
+</div>
+
+<!-- ============ VUE 3 : ESPACE MEMBRE ============ -->
+<div id="vue-membre" class="cache">
+  <header class="entete">
+    <div class="conteneur entete__contenu">
+      <img src="/icons/icon-192.png" alt="Logo FGBMFI Paris" class="logo">
+      <div class="entete__texte">
+        <span class="entete__nom">FGBMFI Paris</span>
+        <span class="entete__rna">RNA W751258889 · Espace membres</span>
+      </div>
+      <button class="entete__deconnexion" id="btn-deconnexion">Déconnexion</button>
+    </div>
+  </header>
+
+  <section class="hero-membre">
+    <div class="conteneur">
+      <span class="eyebrow">Bienvenue, <span id="prenom-membre">—</span></span>
+      <h1 id="hero-titre">Bienvenue dans l'espace des membres de FGBMFI Paris</h1>
+      <p id="hero-soustitre">Retrouvez les statuts officiels de l'association, découvrez son organisation et participez à sa dynamique.</p>
+      <div class="cta"><button id="btn-consulter-statuts">Consulter les statuts</button></div>
+    </div>
+  </section>
+
+  <section class="section-membre">
+    <div class="conteneur">
+      <h2 style="font-size:1.1rem;">Participer à la dynamique</h2>
+      <div class="grille-actions" id="grille-actions">
+        <!-- rempli par app.js à partir des paramètres -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <p><strong>FGBMFI Paris</strong><br>
+      Full Gospel Business Men's Fellowship International Paris<br>
+      Association loi 1901 — RNA <span class="rna">W751258889</span><br>
+      Siège social : 66 avenue des Champs-Élysées, 75008 Paris</p>
+      <p>FGBMFI Paris est une association inspirée par des valeurs chrétiennes, ouverte à tous, sans condition confessionnelle d'adhésion, de participation ou de gouvernance.</p>
+      <p><a href="/confidentialite">Confidentialité et données personnelles</a></p>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ VUE 4 : LECTEUR DE STATUTS (plein écran) ============ -->
+<div id="vue-lecteur" class="cache">
+  <div class="lecteur-entete">
+    <span class="titre">Statuts de FGBMFI Paris</span>
+    <div class="lecteur-controles">
+      <button id="btn-page-precedente" aria-label="Page précédente">←</button>
+      <span class="page-indic"><span id="page-actuelle">1</span> / <span id="page-totale">—</span></span>
+      <button id="btn-page-suivante" aria-label="Page suivante">→</button>
+      <button id="btn-zoom-moins" aria-label="Zoom arrière">−</button>
+      <button id="btn-zoom-plus" aria-label="Zoom avant">+</button>
+      <button id="btn-fermer-lecteur">Fermer</button>
+    </div>
+  </div>
+  <div class="lecteur-zone" id="lecteur-zone">
+    <p class="avis-securite">Ce document est réservé à la consultation personnelle des membres de FGBMFI Paris. Sa reproduction et sa diffusion non autorisées sont interdites.</p>
+    <div id="conteneur-page-pdf"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.js"></script>
+<script src="/js/pdfViewer.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
