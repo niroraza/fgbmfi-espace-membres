@@ -1,0 +1,7 @@
+node_modules/
+data/*.db
+data/*.db-*
+.env
+uploads/statuts.pdf
+*.log
+.DS_Store
