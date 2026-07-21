@@ -223,6 +223,37 @@
 
   // ================= JOURNAUX =================
   async function chargerLogs() {
+    // Contrôles de purge, réservés au super-administrateur
+    const zonePurge = $('actions-purge-logs');
+    if (monRole === 'super_admin') {
+      zonePurge.innerHTML = `
+        <button class="bouton-mini bouton-mini--danger" id="btn-vider-journal">Vider tout le journal</button>
+        <input id="purge-telephone" placeholder="+33600000000" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-family:var(--font-mono);font-size:0.85rem;">
+        <button class="bouton-mini bouton-mini--fantome" id="btn-purge-membre">Effacer l'historique de ce numéro</button>
+      `;
+      $('btn-vider-journal').addEventListener('click', async () => {
+        if (!confirm("Effacer DÉFINITIVEMENT tout le journal des connexions ?\n\nCette action est irréversible.")) return;
+        try {
+          const data = await api('/api/admin/logs/connexions', { method: 'DELETE' });
+          alert(data.message);
+          await chargerLogs();
+        } catch (err) { alert(err.message); }
+      });
+      $('btn-purge-membre').addEventListener('click', async () => {
+        const telephone = $('purge-telephone').value.trim();
+        if (!telephone) { alert("Merci de saisir un numéro de téléphone."); return; }
+        if (!confirm(`Effacer l'historique de connexion du numéro ${telephone} ?\n\nCette action est irréversible.`)) return;
+        try {
+          const data = await api(`/api/admin/logs/connexions?telephone=${encodeURIComponent(telephone)}`, { method: 'DELETE' });
+          alert(data.message);
+          $('purge-telephone').value = '';
+          await chargerLogs();
+        } catch (err) { alert(err.message); }
+      });
+    } else {
+      zonePurge.innerHTML = '';
+    }
+
     try {
       const logsConn = await api('/api/admin/logs/connexions');
       document.querySelector('#table-logs-connexions tbody').innerHTML = logsConn.map(l => `
