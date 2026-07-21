@@ -63,11 +63,12 @@
   }
 
   // ================= MEMBRES =================
+  let membresEnCache = [];
+
   async function chargerMembres() {
-    let membres = [];
-    try { membres = await api('/api/admin/membres'); } catch (e) { return; }
+    try { membresEnCache = await api('/api/admin/membres'); } catch (e) { return; }
     const tbody = document.querySelector('#table-membres tbody');
-    tbody.innerHTML = membres.map(m => `
+    tbody.innerHTML = membresEnCache.map(m => `
       <tr data-id="${m.id}">
         <td>${m.prenom} ${m.nom}</td>
         <td style="font-family:var(--font-mono)">${m.telephone}</td>
@@ -75,8 +76,10 @@
         <td>${m.actif ? '<span class="badge badge--ok">Actif</span>' : '<span class="badge badge--off">Suspendu</span>'}</td>
         <td>${m.date_derniere_connexion ? new Date(m.date_derniere_connexion + 'Z').toLocaleString('fr-FR') : '—'}</td>
         <td>
+          <button class="bouton-mini bouton-mini--fantome" data-action="modifier">Modifier</button>
           <button class="bouton-mini bouton-mini--fantome" data-action="basculer">${m.actif ? 'Suspendre' : 'Réactiver'}</button>
           <button class="bouton-mini bouton-mini--fantome" data-action="debloquer">Débloquer</button>
+          ${monRole === 'super_admin' ? '<button class="bouton-mini bouton-mini--danger" data-action="supprimer">Supprimer</button>' : ''}
         </td>
       </tr>
     `).join('') || '<tr><td colspan="6">Aucun membre enregistré pour le moment.</td></tr>';
@@ -92,42 +95,69 @@
         await api(`/api/admin/membres/${id}`, { method: 'PUT', body: JSON.stringify({ actif: !estActif }) });
       } else if (btn.dataset.action === 'debloquer') {
         await api(`/api/admin/membres/${id}/debloquer`, { method: 'POST' });
+      } else if (btn.dataset.action === 'modifier') {
+        const membre = membresEnCache.find(m => String(m.id) === id);
+        if (membre) ouvrirFormulaireMembre(membre);
+        return;
+      } else if (btn.dataset.action === 'supprimer') {
+        const membre = membresEnCache.find(m => String(m.id) === id);
+        const confirmation = confirm(
+          `Supprimer définitivement ${membre.prenom} ${membre.nom} (${membre.telephone}) ?\n\n` +
+          `Cette action est IRRÉVERSIBLE et efface aussi son historique de connexion.\n` +
+          `Pour simplement lui retirer l'accès sans tout effacer, utilisez plutôt "Suspendre".`
+        );
+        if (!confirmation) return;
+        await api(`/api/admin/membres/${id}?definitif=true`, { method: 'DELETE' });
       }
       await chargerMembres();
     } catch (err) { alert(err.message); }
   });
 
-  $('btn-nouveau-membre').addEventListener('click', () => {
+  function ouvrirFormulaireMembre(membreExistant) {
     const zone = $('formulaire-membre');
     zone.classList.remove('cache');
+    const estModification = !!membreExistant;
     zone.innerHTML = `
-      <h3 style="margin-top:0;">Ajouter un membre</h3>
-      <div class="champ-inline"><label>Prénom</label><input id="nm-prenom"></div>
-      <div class="champ-inline"><label>Nom</label><input id="nm-nom"></div>
-      <div class="champ-inline"><label>Téléphone</label><input id="nm-telephone" placeholder="+33600000000"></div>
+      <h3 style="margin-top:0;">${estModification ? 'Modifier le membre' : 'Ajouter un membre'}</h3>
+      <div class="champ-inline"><label>Prénom</label><input id="nm-prenom" value="${membreExistant?.prenom || ''}"></div>
+      <div class="champ-inline"><label>Nom</label><input id="nm-nom" value="${membreExistant?.nom || ''}"></div>
+      <div class="champ-inline"><label>Téléphone</label><input id="nm-telephone" placeholder="+33600000000" value="${membreExistant?.telephone || ''}"></div>
       <div class="champ-inline"><label>Statut</label>
-        <select id="nm-statut"><option value="membre">Membre</option><option value="bureau">Bureau</option><option value="honoraire">Honoraire</option></select>
+        <select id="nm-statut">
+          <option value="membre">Membre</option>
+          <option value="bureau">Bureau</option>
+          <option value="honoraire">Honoraire</option>
+        </select>
       </div>
-      <button class="bouton-mini" id="nm-enregistrer">Enregistrer</button>
+      <button class="bouton-mini" id="nm-enregistrer">${estModification ? 'Enregistrer les modifications' : 'Enregistrer'}</button>
       <button class="bouton-mini bouton-mini--fantome" id="nm-annuler">Annuler</button>
       <div id="nm-message"></div>
     `;
+    if (estModification) $('nm-statut').value = membreExistant.statut;
+
     $('nm-annuler').addEventListener('click', () => zone.classList.add('cache'));
     $('nm-enregistrer').addEventListener('click', async () => {
+      const donnees = {
+        prenom: $('nm-prenom').value.trim(),
+        nom: $('nm-nom').value.trim(),
+        telephone: $('nm-telephone').value.trim(),
+        statut: $('nm-statut').value,
+      };
       try {
-        await api('/api/admin/membres', { method: 'POST', body: JSON.stringify({
-          prenom: $('nm-prenom').value.trim(),
-          nom: $('nm-nom').value.trim(),
-          telephone: $('nm-telephone').value.trim(),
-          statut: $('nm-statut').value,
-        }) });
+        if (estModification) {
+          await api(`/api/admin/membres/${membreExistant.id}`, { method: 'PUT', body: JSON.stringify(donnees) });
+        } else {
+          await api('/api/admin/membres', { method: 'POST', body: JSON.stringify(donnees) });
+        }
         zone.classList.add('cache');
         await chargerMembres();
       } catch (err) {
         $('nm-message').innerHTML = `<div class="message message--erreur">${err.message}</div>`;
       }
     });
-  });
+  }
+
+  $('btn-nouveau-membre').addEventListener('click', () => ouvrirFormulaireMembre(null));
 
   $('input-csv').addEventListener('change', async (e) => {
     const fichier = e.target.files[0];
