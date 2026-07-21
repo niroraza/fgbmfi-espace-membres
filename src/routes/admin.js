@@ -224,6 +224,22 @@ router.get('/logs/connexions', requireAdmin('gestionnaire_membres'), (req, res) 
   const logs = db.prepare(`SELECT * FROM sessions_log ORDER BY id DESC LIMIT 200`).all();
   res.json(logs);
 });
+
+// Effacement du journal des connexions (réservé au super-administrateur).
+// Ce journal (sessions_log) est distinct des admin_logs (actions administrateur),
+// qui eux restent intacts pour garder une traçabilité de cette purge elle-même.
+router.delete('/logs/connexions', requireAdmin('super_admin'), (req, res) => {
+  const telephone = req.query.telephone ? normaliserTelephone(req.query.telephone) : null;
+  let info;
+  if (telephone) {
+    info = db.prepare(`DELETE FROM sessions_log WHERE telephone = ?`).run(telephone);
+    logAdmin(req.admin.email, 'purge_journal_connexions_membre', `${telephone} — ${info.changes} entrée(s)`, req.ip);
+  } else {
+    info = db.prepare(`DELETE FROM sessions_log`).run();
+    logAdmin(req.admin.email, 'purge_journal_connexions_complet', `${info.changes} entrée(s)`, req.ip);
+  }
+  res.json({ message: `${info.changes} entrée(s) de journal supprimée(s).`, supprimees: info.changes });
+});
 router.get('/logs/admin', requireAdmin('super_admin'), (req, res) => {
   const logs = db.prepare(`SELECT * FROM admin_logs ORDER BY id DESC LIMIT 200`).all();
   res.json(logs);
