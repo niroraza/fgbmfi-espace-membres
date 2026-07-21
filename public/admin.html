@@ -104,7 +104,11 @@
 
     <!-- ---- Onglet Journaux ---- -->
     <section id="onglet-journaux" class="panneau cache">
-      <h2>Journal des connexions membres</h2>
+      <div class="panneau-entete">
+        <h2>Journal des connexions membres</h2>
+        <div class="actions-groupe" id="actions-purge-logs"></div>
+      </div>
+      <p class="aide">Effacer l'historique retire définitivement ces entrées ; l'action elle-même reste tracée dans le journal des actions administrateur ci-dessous.</p>
       <table class="table-admin" id="table-logs-connexions">
         <thead><tr><th>Date</th><th>Téléphone</th><th>Action</th><th>IP</th></tr></thead>
         <tbody></tbody>
